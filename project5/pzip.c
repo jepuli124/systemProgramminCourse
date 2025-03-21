@@ -118,8 +118,6 @@ void compress_file(char *fm, size_t file_length, size_t num_of_threads /*, char 
     // other threads will be joined in the loop
     pthread_join(pThreads[0], (void**) &p_rets[0]);
 
-    
-
     pthread_t write_pthread;
 
     // merge threads and write data
@@ -164,7 +162,7 @@ void compress_file(char *fm, size_t file_length, size_t num_of_threads /*, char 
 int main(int argc, char *argv[]) {
 
     if (argc < 2) {
-        printf("my-zip: file1 [file2 ...]\n");
+        printf("pzip: file1 [file2 ...]\n");
         exit(1);
     }
 

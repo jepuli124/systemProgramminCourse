@@ -74,7 +74,7 @@ size_t get_file_length(char *file_name) { //simply finds the end of file and giv
 int main(int argc, char *argv[]) {
     // if atleast 1 file is not given, exit
     if (argc < 2) {
-        printf("my-unzip: file1 [file2 ...]\n");
+        printf("punzip: file1 [file2 ...]\n");
         exit(1);
     }
 
