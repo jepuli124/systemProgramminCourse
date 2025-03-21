@@ -22,7 +22,7 @@ typedef struct {
     size_t last_used_index;
 } pthread_ret_t;
 
-size_t get_file_length(char *file_name) {
+size_t get_file_length(char *file_name) { //simply finds the end of file and gives the index of that mark.
     FILE *file;
     long len;
     // try to open file
@@ -36,7 +36,7 @@ size_t get_file_length(char *file_name) {
     return len;
 }
 
-void *p_compress(void *pthread_args) {
+void *p_compress(void *pthread_args) {  // goes file symbol by symbol and counts them, then returns the chars and amounts
     pthread_arg_t *args = (pthread_arg_t*) pthread_args;
 
     pthread_ret_t *ret = malloc(sizeof *ret);
@@ -140,10 +140,6 @@ void compress_file(char *fm, size_t file_length, size_t num_of_threads /*, char 
                 p_rets[thread]->last_used_index -= 1;
             }
 
-            // if(thread == 0 && p_rets[thread + 1]->data[0].c == lastLetter){
-
-            // }
-
         }
 
         // write the data
@@ -164,16 +160,11 @@ void compress_file(char *fm, size_t file_length, size_t num_of_threads /*, char 
 
 } 
 
-//idk what is wrong, this returns the last character of the file bubblegumfix
-// char lastCharOfFile(){
-    
-//     return
-// }
 
 int main(int argc, char *argv[]) {
 
     if (argc < 2) {
-        printf("wzip: file1 [file2 ...]\n");
+        printf("my-zip: file1 [file2 ...]\n");
         exit(1);
     }
 
@@ -193,7 +184,7 @@ int main(int argc, char *argv[]) {
     size_t num_of_threads = get_nprocs();
 
     for (size_t i = 1; i < argc; i++) {
-        if ((fp = fopen(argv[i], "r"))){
+        if ((fp = fopen(argv[i], "r"))){ //opens a file then makes a memory map with mmap, then adds it to overal memory map   
             file_length += get_file_length(argv[i]); 
             currentSize += file_length;
             char * tempfm = mmap(NULL, file_length, PROT_READ, MAP_PRIVATE, fileno(fp), 0);
@@ -210,7 +201,7 @@ int main(int argc, char *argv[]) {
         }
     }
     file_length += 1;             // fixes files that doesn't have empty line at end of the file 
-    compress_file(fm, file_length, num_of_threads);
+    compress_file(fm, file_length, num_of_threads); // compresses the complete memory map
     free(fm);
     fm = NULL;
     exit(0);

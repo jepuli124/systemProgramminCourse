@@ -6,10 +6,10 @@ void print_file(FILE *file_out, FILE *file_in) {
     size_t n = 0;
 
     // get line
-    while (getline(&line, &n, file_in) > 0) {
+    while (getline(&line, &n, file_in) > 0) { // gets and prints the file line by line 
         // print line
         fprintf(file_out, "%s", line);
-        free(line);
+        free(line); // frees the memory from the line pointer
         line = NULL;
     }
     free(line);

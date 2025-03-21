@@ -28,7 +28,7 @@ void decompress_file(pthread_arg_t *p_args, char ** returnValue) {
 
     char * text = malloc(sizeof(char)*2); //allocating start memory
     text[0] = '\0';
-    // read data into buffer
+    // read data into buffer by byte at time
     buffer.n = (p_args->fm[p_args->start_index+3] << 24) | (p_args->fm[p_args->start_index+2] << 16) | (p_args->fm[p_args->start_index+1] << 8) | (p_args->fm[p_args->start_index]);
     buffer.c = p_args->fm[p_args->start_index+4];
 
@@ -49,7 +49,7 @@ void decompress_file(pthread_arg_t *p_args, char ** returnValue) {
     return;
 }
 
-void * runThread(void *p_args){
+void * runThread(void *p_args){ //the function that the thread runs, makes stuff easy to handle
 
     char * returnValues;
     decompress_file((pthread_arg_t *) p_args, &returnValues);
@@ -57,7 +57,7 @@ void * runThread(void *p_args){
     return returnValues;
 }
 
-size_t get_file_length(char *file_name) {
+size_t get_file_length(char *file_name) { //simply finds the end of file and gives the index of that mark.
     FILE *file;
     long len;
     // try to open file
@@ -74,7 +74,7 @@ size_t get_file_length(char *file_name) {
 int main(int argc, char *argv[]) {
     // if atleast 1 file is not given, exit
     if (argc < 2) {
-        printf("wunzip: file1 [file2 ...]\n");
+        printf("my-unzip: file1 [file2 ...]\n");
         exit(1);
     }
 
@@ -145,7 +145,7 @@ int main(int argc, char *argv[]) {
                     
                     free(returnValues[i]);
                 }
-                free(thread_id);
+                free(thread_id); // free some values
                 free(p_args);
                 free(returnValues);
                 p_args = NULL;
@@ -153,14 +153,15 @@ int main(int argc, char *argv[]) {
                 
             }
 
-            fclose(fp);
+            fclose(fp); // free some more values
             fp = NULL;
             tempfm = NULL;
             
         } else {
-            // if opening fails, exit
+            // if opening fails, exit 
             printf("failed opening file %s\n", argv[i]);
             exit(1);
+            
         }
     }
     exit(0);
